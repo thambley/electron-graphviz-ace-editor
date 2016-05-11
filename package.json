@@ -1,0 +1,30 @@
+{
+  "name": "electron-graphviz-ace-editor",
+  "version": "0.1.0",
+  "description": "A graphviz editor built with electron, ace.js and viz.js",
+  "keywords": [
+    "graphviz",
+    "editor",
+    "electron",
+    "ace"
+  ],
+  "main": "app.js",
+  "bin": {
+    "electron-graphviz-ace-editor": "./bin/electron-graphviz-ace-editor"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thambley/electron-graphviz-ace-editor.git"
+  },
+  "author": "Todd Hambley",
+  "license": "MIT",
+  "dependencies": {
+	"electron-prebuilt": "^0.37.8",
+    "electron-window": "^0.7.0",
+    "ace-builds": "ajaxorg/ace-builds",
+	"viz.js": "^1.3"
+  }
+}
