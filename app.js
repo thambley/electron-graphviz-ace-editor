@@ -2,9 +2,13 @@ const electron = require('electron')
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
 const app = electron.app
+const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
+const fs = require('fs');
 
 const electronWindow = require('electron-window');
 let readFile = null;
+let mainWindow = null;
 
 process.argv.forEach(function (val, index, array) {
 
@@ -15,6 +19,21 @@ process.argv.forEach(function (val, index, array) {
    }
  });
 
+function loadFile(filenames) {
+	mainWindow.send('remote-log', 'start loadFile');
+	if (filenames === undefined) return;
+	mainWindow.send('remote-log', 'filename: ' + filenames);
+	fs.readFile(filenames[0], 'utf-8', function (err, data) {
+		//document.getElementById("editor").value = data;
+		mainWindow.send('load-data', data);
+	});
+	mainWindow.send('remote-log', 'end loadFile');
+}	
+ 
+function openFile() {
+	dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'DOT', extensions: ['dot','gv'] }]}, loadFile);
+};
+
 let template = [
    {
     label: 'File',
@@ -22,8 +41,9 @@ let template = [
       {
         label: 'Open',
         click: function(item, focusedWindow) {
-          if (focusedWindow)
-            alert('Open');// openFile();
+          if (focusedWindow) {
+            openFile();
+		  }
         },
         accelerator: 'CmdOrCtrl+O',
         role: 'open'
@@ -220,7 +240,7 @@ app.on('ready', function() {
             javascript : false
         };
     
-    const mainWindow = electronWindow.createWindow(options);   
+    mainWindow = electronWindow.createWindow(options);   
     const args = {
         file: readFile
     };
