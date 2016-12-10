@@ -11,7 +11,6 @@ let readFile = null;
 let mainWindow = null;
 
 process.argv.forEach(function (val, index, array) {
-
    if (index == 2) {
        readFile = val;
    } else {
@@ -22,17 +21,39 @@ process.argv.forEach(function (val, index, array) {
 function loadFile(filenames) {
 	mainWindow.send('remote-log', 'start loadFile');
 	if (filenames === undefined) return;
+	// store the filename somewhere so it can be saved!
+	readFile = filenames[0];
 	mainWindow.send('remote-log', 'filename: ' + filenames);
 	fs.readFile(filenames[0], 'utf-8', function (err, data) {
-		//document.getElementById("editor").value = data;
 		mainWindow.send('load-data', data);
 	});
 	mainWindow.send('remote-log', 'end loadFile');
 }	
- 
+
 function openFile() {
 	dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: 'DOT', extensions: ['dot','gv'] }]}, loadFile);
 };
+
+function saveFile() {
+	mainWindow.send('remote-log', 'start saveFile');
+	
+	if (readFile) {
+		mainWindow.send('save-data', readFile);
+	} else {
+		// call save as
+	}
+	
+	mainWindow.send('remote-log', 'end saveFile');
+}
+
+ipcMain.on('save-data', (event, arg) => {
+	console.log('save-data (main): ' + arg.filename);
+	mainWindow.send('remote-log', 'start save-data');
+});
+
+function saveFileAs() {
+	// do nothing!
+}
 
 let template = [
    {
@@ -51,9 +72,9 @@ let template = [
       {
         label: 'Save',
         click: function(item, focusedWindow) {
-          if (focusedWindow)
-            alert('Save');// saveFile();
-        
+          if (focusedWindow) {
+		    saveFile();
+		  }
         },
         accelerator: 'CmdOrCtrl+S',
         role: 'Save'
@@ -62,7 +83,7 @@ let template = [
         label: 'Save as',
         click: function(item, focusedWindow) {
           if (focusedWindow)
-            alert('Save-As'); // saveFileAs();
+            saveFileAs();
         },
         //accelerator: 'CmdOrCtrl+S',
         role: 'save-as'
@@ -232,7 +253,6 @@ if (process.platform == 'darwin') {
 }
  
 app.on('ready', function() {
-    
     const options = {
             width: 800,
             height: 600,
