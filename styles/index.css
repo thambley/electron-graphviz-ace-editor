@@ -16,24 +16,29 @@
 }
 
 #panes {
-  display: flex;
-  display: -webkit-flex;
-  flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
+  position: relative;
 }
 
 #editor {
-  flex: 1 1 50%;
-  -webkit-flex: 1 1 50%;
+  position: absolute;
 }
 
 #graph {
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  -webkit-flex-direction: column;
-  flex: 1 1 50%;
-  -webkit-flex: 1 1 50%;
+  position: absolute;
+}
+
+#splitter {
+  position: absolute;
+  border: 1px solid #EEEEEE;
+  width: 0px;
+  cursor: ew-resize;
+  z-index: 10;  
+}
+
+#splitter:hover {
+    margin-left: -2px;
+    width: 3px;
+    border-color: #B5B4E0;
 }
 
 #options {

@@ -11,10 +11,10 @@ const ipcRenderer = electron.ipcRenderer;
 
 // Prevent default click 'a' event
 document.addEventListener('click', function(event) {
-	event.preventDefault();
 	let url = event.target.getAttribute('href');
 	if (isDefined(url)) {
 		shell.openExternal(url);
+		event.preventDefault();
 	}
 }, false);
 	
