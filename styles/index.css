@@ -36,9 +36,9 @@
 }
 
 #splitter:hover {
-    margin-left: -2px;
-    width: 3px;
-    border-color: #B5B4E0;
+  margin-left: -2px;
+  width: 3px;
+  border-color: #B5B4E0;
 }
 
 #options {
@@ -47,12 +47,9 @@
 }
 
 #output {
-  flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
   position: relative;
   overflow: auto;
 }
-
 
 #editor {
   border-right: 1px solid #ccc;

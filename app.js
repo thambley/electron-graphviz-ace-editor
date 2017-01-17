@@ -40,7 +40,7 @@ function saveFile() {
 	if (readFile) {
 		mainWindow.send('save-data', readFile);
 	} else {
-		// call save as
+		saveFileAs();
 	}
 	
 	mainWindow.send('remote-log', 'end saveFile');
@@ -55,6 +55,10 @@ function saveFileAs() {
 	// do nothing!
 }
 
+function setEngine(item, focusedWindow) {
+  console.log(`item: ${item.id}`)
+}
+
 let template = [
    {
     label: 'File',
@@ -64,7 +68,7 @@ let template = [
         click: function(item, focusedWindow) {
           if (focusedWindow) {
             openFile();
-		  }
+		      }
         },
         accelerator: 'CmdOrCtrl+O',
         role: 'open'
@@ -73,8 +77,8 @@ let template = [
         label: 'Save',
         click: function(item, focusedWindow) {
           if (focusedWindow) {
-		    saveFile();
-		  }
+		        saveFile();
+		      }
         },
         accelerator: 'CmdOrCtrl+S',
         role: 'Save'
@@ -82,8 +86,9 @@ let template = [
       {
         label: 'Save as',
         click: function(item, focusedWindow) {
-          if (focusedWindow)
+          if (focusedWindow) {
             saveFileAs();
+          }
         },
         //accelerator: 'CmdOrCtrl+S',
         role: 'save-as'
@@ -136,8 +141,9 @@ let template = [
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',
         click: function(item, focusedWindow) {
-          if (focusedWindow)
+          if (focusedWindow) {
             focusedWindow.reload();
+          }
         }
       },
       {
@@ -149,8 +155,9 @@ let template = [
             return 'F11';
         })(),
         click: function(item, focusedWindow) {
-          if (focusedWindow)
+          if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+          }
         }
       },
       {
@@ -162,9 +169,58 @@ let template = [
             return 'Ctrl+Shift+I';
         })(),
         click: function(item, focusedWindow) {
-          if (focusedWindow)
+          if (focusedWindow) {
             focusedWindow.toggleDevTools();
+          }
         }
+      }
+    ]
+  },
+  {
+    label: 'Graph',
+    submenu: [
+      {
+        label: 'Engine',
+        sublabel: 'dot',
+        submenu: [
+          {
+            id: 'circo',
+            label: 'circo',
+            type: 'radio',
+            click: setEngine
+          },
+          {
+            id: 'dot',
+            label: 'dot',
+            type: 'radio',
+            checked: true,
+            click: setEngine
+          },
+          {
+            id: 'fdp',
+            label: 'fdp',
+            type: 'radio',
+            click: setEngine
+          },
+          {
+            id: 'neato',
+            label: 'neato',
+            type: 'radio',
+            click: setEngine
+          },
+          {
+            id: 'osage',
+            label: 'osage',
+            type: 'radio',
+            click: setEngine
+          },
+          {
+            id: 'twopi',
+            label: 'twopi',
+            type: 'radio',
+            click: setEngine
+          }
+        ]
       }
     ]
   },
@@ -253,20 +309,20 @@ if (process.platform == 'darwin') {
 }
  
 app.on('ready', function() {
-    const options = {
-            width: 800,
-            height: 600,
-            icon: 'assets/icon.png',
-            javascript : false
-        };
+  const options = {
+          width: 800,
+          height: 600,
+          icon: 'assets/icon.png',
+          javascript : false
+  };
     
-    mainWindow = electronWindow.createWindow(options);   
-    const args = {
-        file: readFile
-    };
+  mainWindow = electronWindow.createWindow(options);   
+  const args = {
+    file: readFile
+  };
 	
 	const menu = Menu.buildFromTemplate(template)
 	Menu.setApplicationMenu(menu)
   
-    mainWindow.showUrl(__dirname + '/index.html', args);
+  mainWindow.showUrl(__dirname + '/index.html', args);
 });
