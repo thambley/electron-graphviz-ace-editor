@@ -1,4 +1,4 @@
-var split = (function(container) {
+(function(container) {
   var editPane = document.getElementById("editor");
   var splitter = document.getElementById("splitter");
   var graphPane = document.getElementById("graph");
@@ -45,7 +45,6 @@ var split = (function(container) {
   split.onMouseDown = function(e) {
     var rect = container.getBoundingClientRect();
     var x = e.clientX;
-    var y = e.clientY;
 
     var button = e.button;
     if (button !== 0) {
@@ -54,10 +53,9 @@ var split = (function(container) {
 
     var onMouseMove = function(e) {
       x = e.clientX;
-      y = e.clientY;
     };
     
-    var onResizeEnd = function(e) {
+    var onResizeEnd = function() {
       clearInterval(timerId);
     };
 
