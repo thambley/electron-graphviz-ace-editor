@@ -10,11 +10,9 @@ const electronWindow = require('electron-window');
 let readFile = null;
 let mainWindow = null;
 
-process.argv.forEach(function (val, index, array) {
+process.argv.forEach(function (val, index) {
    if (index == 2) {
        readFile = val;
-   } else {
-       readfile = null;
    }
  });
 
